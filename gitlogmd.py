@@ -29,3 +29,5 @@ def getfile(prompt=": "):
 infile = getfile("Enter the input filename [git log > file]: ")
 mdfile = getfile("Enter the output filename [will become a markdown file]: ")
 print(Fore.GREEN + "Input: " + infile + " Output: " + mdfile + Fore.WHITE)
+
+#todo read input file...
