@@ -9,7 +9,7 @@ the name of the file containing the log to be formatted.
 import os.path
 from colorama import Fore, Back
 
-def getfile(prompt=": "):
+def getfile(prompt=": ", check=True):
     if (len(prompt) <= 0):
         print(Fore.RED + "Error: Prompt string was not supplied!" + Fore.WHITE)
         return ""
@@ -19,15 +19,18 @@ def getfile(prompt=": "):
         if len(fname) <= 0:
             print(Fore.RED + "Error: Input string was not provided." + Fore.WHITE)
         else:
-            if not os.path.isfile("./" + fname):
-                print(Fore.RED + "Error: File ./" + fname + " was not found." + Fore.WHITE)
-                fname = ""
+            if check:
+                if not os.path.isfile("./" + fname):
+                    print(Fore.RED + "Error: File ./" + fname + " was not found." + Fore.WHITE)
+                    fname = ""
+                else:
+                    break
             else:
                 break
     return fname
 
-infile = getfile("Enter the input filename [git log > file]: ")
-mdfile = getfile("Enter the output filename [will become a markdown file]: ")
+infile = getfile("Enter the input filename [git log > file]: ", True)
+mdfile = getfile("Enter the output filename [will become a markdown file]: ", False)
 print(Fore.GREEN + "Input: " + infile + " Output: " + mdfile + Fore.WHITE)
 
 #todo read input file...
