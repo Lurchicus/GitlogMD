@@ -5,12 +5,21 @@ and reformat the contents into a markdown file (logfile.md) where logfile is
 the name of the file containing the log to be formatted.
 """
 
-
 import os.path
-from colorama import Fore, Back
+from colorama import Fore
 
 def getfile(prompt=": ", check=True):
-    if (len(prompt) <= 0):
+    """
+    This function shows a predefined prompt and collects input from the user.
+    The input is validated for nonzero input length, nonzero prompt length
+    and optionally file existance. Errors messages are displayed for these if
+    needed.
+    prompt: A plain text string that will be shown to the user (default "")
+    check:  A boolean flag to indicate if file existance is to be checked
+            or not (default: True)
+    return  A string containing (we hope) a filename in the current directory
+    """
+    if len(prompt) <= 0:
         print(Fore.RED + "Error: Prompt string was not supplied!" + Fore.WHITE)
         return ""
     fname = ""
@@ -33,4 +42,4 @@ infile = getfile("Enter the input filename [git log > file]: ", True)
 mdfile = getfile("Enter the output filename [will become a markdown file]: ", False)
 print(Fore.GREEN + "Input: " + infile + " Output: " + mdfile + Fore.WHITE)
 
-#todo read input file...
+# todo read input file...
