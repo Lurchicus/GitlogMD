@@ -8,12 +8,22 @@ the name of the file containing the log to be formatted.
 import os.path
 from colorama import Fore
 
+class LogInfo:
+    def __init__(self, num, commit, author, date, message):
+        self.num = num
+        self.commit = commit
+        self.author = author
+        self.date = date
+        self.message = message
+
+
 def getfile(prompt=": ", check=True):
     """
     This function shows a predefined prompt and collects input from the user.
     The input is validated for nonzero input length, nonzero prompt length
     and optionally file existance. Errors messages are displayed for these if
     needed.
+
     prompt: A plain text string that will be shown to the user (default "")
     check:  A boolean flag to indicate if file existance is to be checked
             or not (default: True)
