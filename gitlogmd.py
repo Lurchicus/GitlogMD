@@ -53,3 +53,14 @@ mdfile = getfile("Enter the output filename [will become a markdown file]: ", Fa
 print(Fore.GREEN + "Input: " + infile + " Output: " + mdfile + Fore.WHITE)
 
 # todo read input file...
+InCount = 0
+File = open(infile, "r", encoding="utf-8")
+for Line in File:
+    # Skip empty lines
+    if len(Line) > 1:
+        #Remove leading and trailing whitespace
+        Line = Line.strip()
+        InCount = InCount + 1
+        print(str(InCount) + "-" + str(len(Line)) + ":" + Line)
+
+File.close
