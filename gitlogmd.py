@@ -61,16 +61,19 @@ File = open(infile, "r", encoding="utf-8")
 for Line in File:
     # Skip empty lines
     if len(Line) > 1:
+        # Instantiate the LogInfo class
         if Line.startswith("commit"):
             Info = LogInfo("","","","","")
-        #Remove leading and trailing whitespace
-        #Line = Line.strip()
+        # Parse...
+        # Get the commit and entry number
         if Line.startswith("commit"):
             Line = Line.strip()
             InCount = InCount + 1
             Stuff = Line.split()
             Info.num = str(InCount)
             Info.commit = Stuff[1].strip()
+            Info.message = "<<No message>>"
+        # Get the author
         if Line.startswith("Author:"):
             Line = Line.strip()
             Meld = ""
@@ -78,8 +81,8 @@ for Line in File:
             Stuff = Line.split()
             for Chunk in Stuff[1:]:
                 Meld = Meld + Chunk + " "
-            #print("Chunk: " + Chunk + " Meld: " + Meld)
             Info.author = Meld.strip()
+        # Get the date info
         if Line.startswith("Date:"):
             Line = Line.strip()
             Meld = ""
@@ -87,20 +90,15 @@ for Line in File:
             Stuff = Line.split()
             for Chunk in Stuff[1:]:
                 Meld = Meld + Chunk + " "
-            #print("Chunk: " + Chunk + " Meld: " + Meld)
             Info.date = Meld.strip()
-        # print(str(InCount) + "-" + str(len(Line)) + ":" + Line)
+        # Get the commit message
         if Line.startswith(" "):
             Info.message = Line.strip()
+        # Push the Class onto a list
         if len(Info.message) > 0:
             GnuLog.append(Info)
-            #print("------")
-            #print(Info.num)
-            #print(Info.commit)
-            #print(Info.author)
-            #print(Info.date)
-            #print(Info.message)
-            #print("------")
+
+# Output the class info (this is where I'll create the MD file)
 Info = LogInfo("","","","","")
 for Info in GnuLog[0:]:
     print("------")
@@ -109,4 +107,3 @@ for Info in GnuLog[0:]:
     print(Info.author)
     print(Info.date)
     print(Info.message)
-File.close
