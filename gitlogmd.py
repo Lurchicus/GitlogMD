@@ -53,14 +53,60 @@ mdfile = getfile("Enter the output filename [will become a markdown file]: ", Fa
 print(Fore.GREEN + "Input: " + infile + " Output: " + mdfile + Fore.WHITE)
 
 # todo read input file...
+GnuLog = []
 InCount = 0
+Chunk = ""
+Meld = ""
 File = open(infile, "r", encoding="utf-8")
 for Line in File:
     # Skip empty lines
     if len(Line) > 1:
+        if Line.startswith("commit"):
+            Info = LogInfo("","","","","")
         #Remove leading and trailing whitespace
-        Line = Line.strip()
-        InCount = InCount + 1
-        print(str(InCount) + "-" + str(len(Line)) + ":" + Line)
-
+        #Line = Line.strip()
+        if Line.startswith("commit"):
+            Line = Line.strip()
+            InCount = InCount + 1
+            Stuff = Line.split()
+            Info.num = str(InCount)
+            Info.commit = Stuff[1].strip()
+        if Line.startswith("Author:"):
+            Line = Line.strip()
+            Meld = ""
+            Chunk = ""
+            Stuff = Line.split()
+            for Chunk in Stuff[1:]:
+                Meld = Meld + Chunk + " "
+            #print("Chunk: " + Chunk + " Meld: " + Meld)
+            Info.author = Meld.strip()
+        if Line.startswith("Date:"):
+            Line = Line.strip()
+            Meld = ""
+            Chunk = ""
+            Stuff = Line.split()
+            for Chunk in Stuff[1:]:
+                Meld = Meld + Chunk + " "
+            #print("Chunk: " + Chunk + " Meld: " + Meld)
+            Info.date = Meld.strip()
+        # print(str(InCount) + "-" + str(len(Line)) + ":" + Line)
+        if Line.startswith(" "):
+            Info.message = Line.strip()
+        if len(Info.message) > 0:
+            GnuLog.append(Info)
+            #print("------")
+            #print(Info.num)
+            #print(Info.commit)
+            #print(Info.author)
+            #print(Info.date)
+            #print(Info.message)
+            #print("------")
+Info = LogInfo("","","","","")
+for Info in GnuLog[0:]:
+    print("------")
+    print(Info.num)
+    print(Info.commit)
+    print(Info.author)
+    print(Info.date)
+    print(Info.message)
 File.close
