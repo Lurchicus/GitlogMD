@@ -72,7 +72,7 @@ for Line in File:
             Stuff = Line.split()
             Info.num = str(InCount)
             Info.commit = Stuff[1].strip()
-            Info.message = "<<No message>>"
+            #Info.message = "<<No message>>"
         # Get the author
         if Line.startswith("Author:"):
             Line = Line.strip()
