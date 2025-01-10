@@ -9,6 +9,10 @@ import os.path
 from colorama import Fore
 
 class LogInfo:
+    """
+    This class saves individual git log information for later formatting.
+    All values are strings. These will be stored in a list.
+    """
     def __init__(self, num, commit, author, date, message):
         self.num = num
         self.commit = commit
@@ -97,13 +101,28 @@ for Line in File:
         # Push the Class onto a list
         if len(Info.message) > 0:
             GnuLog.append(Info)
+File.close()
 
 # Output the class info (this is where I'll create the MD file)
 Info = LogInfo("","","","","")
+OFile = open(mdfile, "w", encoding="utf-8")
+Items = len(GnuLog)
+OFile.writelines("# History (git log)\n")
+OFile.writelines("| Item | Info | \n| :--- | :--- |\n")
+#OFile.writelines(OLine)
 for Info in GnuLog[0:]:
-    print("------")
-    print(Info.num)
-    print(Info.commit)
-    print(Info.author)
-    print(Info.date)
-    print(Info.message)
+    OFile.writelines("| Number: | **" + str(Items) + "** |\n")
+    Items -= 1
+    OFile.writelines("| Date | " + Info.date + " |\n")
+    OFile.writelines("| Author | " + Info.author + " |\n")
+    OFile.writelines("| Message | " + Info.message + " |\n")
+    OFile.writelines("| commit | " + Info.commit + " |\n")
+    #print("------")
+    #print(Info.num)
+    #print(Info.commit)
+    #print(Info.author)
+    #print(Info.date)
+    #print(Info.message)
+OFile.flush()
+OFile.close()
+
