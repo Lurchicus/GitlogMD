@@ -1,6 +1,15 @@
 # History (git log)
 
 
+## Commit 16 
+| Item | Info | 
+| :--- | :--- |
+| Date | Fri Jan 10 21:59:30 2025 -0500 |
+| Author | Dan Rhea <dan.rhea@gmail.com> |
+| Message | Split the entries into multiple tables. It looks much better (to me anyway), |
+| commit | 2e1792aa0c3c16870c080d4902f4c4fffe6f8f0b |
+
+
 ## Commit 15 
 | Item | Info | 
 | :--- | :--- |
