@@ -3,12 +3,17 @@ GitlogMD by Dan Rhea (12/24/2024)
 GitlogMD (gitlogmd) will scan a log from a git repository (git log > logfile)
 and reformat the contents into a markdown file (logfile.md) where logfile is
 the name of the file containing the log to be formatted.
+
+I have been looking at this project and finally had to admit that the "history"
+output file was of limited  use as it was always one commit behind. I'm going
+to add a "-b" brief format that will create single lines (md format) that is
+really ment to be run once and added to the README.md file.
 """
 
 import os.path
 from colorama import Fore
 
-class LogInfo:
+class loginfo:
     """
     This class saves individual git log information for later formatting.
     All values are strings. These will be stored in a list.
@@ -52,70 +57,70 @@ def getfile(prompt=": ", check=True):
                 break
     return fname
 
-infile = getfile("Enter the input filename [git log > file]: ", True)
-mdfile = getfile("Enter the output filename [will become a markdown file]: ", False)
-print(Fore.GREEN + "Input: " + infile + " Output: " + mdfile + Fore.WHITE)
 
-# todo read input file...
-GnuLog = []
-InCount = 0
-Chunk = ""
-Meld = ""
-File = open(infile, "r", encoding="utf-8")
-for Line in File:
+in_file = getfile("Enter the input filename [git log > file]: ", True)
+md_file = getfile("Enter the output filename [will become a markdown file]: ", False)
+print(Fore.GREEN + "Input: " + in_file + " Output: " + md_file + Fore.WHITE)
+
+gnu_log = []
+in_count: int = 0
+chunk: str = ""
+meld: str = ""
+file = open(in_file, "r", encoding="utf-8")
+for line in file:
     # Skip empty lines
-    if len(Line) > 1:
+    if len(line) > 1:
         # Instantiate the LogInfo class
-        if Line.startswith("commit"):
-            Info = LogInfo("","","","","")
+        if line.startswith("commit"):
+            info = loginfo("","","","","")
         # Parse...
         # Get the commit and entry number
-        if Line.startswith("commit"):
-            Line = Line.strip()
-            InCount = InCount + 1
-            Stuff = Line.split()
-            Info.num = str(InCount)
-            Info.commit = Stuff[1].strip()
+        if line.startswith("commit"):
+            line = line.strip()
+            in_count = in_count + 1
+            stuff = line.split()
+            info.num = str(in_count)
+            info.commit = stuff[1].strip()
             #Info.message = "<<No message>>"
         # Get the author
-        if Line.startswith("Author:"):
-            Line = Line.strip()
-            Meld = ""
-            Chunk = ""
-            Stuff = Line.split()
-            for Chunk in Stuff[1:]:
-                Meld = Meld + Chunk + " "
-            Info.author = Meld.strip()
+        if line.startswith("Author:"):
+            line = line.strip()
+            meld = ""
+            chunk = ""
+            stuff = line.split()
+            for chunk in stuff[1:]:
+                meld = meld + chunk + " "
+            info.author = meld.strip()
         # Get the date info
-        if Line.startswith("Date:"):
-            Line = Line.strip()
-            Meld = ""
-            Chunk = ""
-            Stuff = Line.split()
-            for Chunk in Stuff[1:]:
-                Meld = Meld + Chunk + " "
-            Info.date = Meld.strip()
+        if line.startswith("Date:"):
+            line = line.strip()
+            meld = ""
+            chunk = ""
+            stuff = line.split()
+            for chunk in stuff[1:]:
+                meld = meld + chunk + " "
+            info.date = meld.strip()
         # Get the commit message
-        if Line.startswith(" "):
-            Info.message = Line.strip()
+        if line.startswith(" "):
+            info.message = line.strip()
         # Push the Class onto a list
-        if len(Info.message) > 0:
-            GnuLog.append(Info)
-File.close()
+        if len(info.message) > 0:
+            gnu_log.append(info)
+file.close()
 
 # Output the class info (this is where I'll create the MD file)
-Info = LogInfo("","","","","")
-OFile = open(mdfile, "w", encoding="utf-8")
-Items = len(GnuLog)
-OFile.writelines("# History (git log)\n")
+info = loginfo("","","","","")
+o_file = open(md_file, "w", encoding="utf-8")
+items = len(gnu_log)
+o_file.writelines("# History (git log)\n")
 #OFile.writelines(OLine)
-for Info in GnuLog[0:]:
-    OFile.writelines("\n\n## Commit " + str(Items) + " \n")
-    OFile.writelines("| Item | Info | \n| :--- | :--- |\n")
-    Items -= 1
-    OFile.writelines("| Date | " + Info.date + " |\n")
-    OFile.writelines("| Author | " + Info.author + " |\n")
-    OFile.writelines("| Message | " + Info.message + " |\n")
-    OFile.writelines("| commit | " + Info.commit + " |\n")
-OFile.flush()
-OFile.close()
+for info in gnu_log[0:]:
+    o_file.writelines("\n\n## Commit " + str(items) + " \n")
+    o_file.writelines("| Item | Info | \n| :--- | :--- |\n")
+    items -= 1
+    o_file.writelines("| Date | " + info.date + " |\n")
+    o_file.writelines("| Author | " + info.author + " |\n")
+    o_file.writelines("| Message | " + info.message + " |\n")
+    o_file.writelines("| commit | " + info.commit + " |\n")
+o_file.flush()
+o_file.close()
